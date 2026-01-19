@@ -1,0 +1,112 @@
+/* ===== Add Product Page Styling ===== */
+
+.add-product-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.add-product-container h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Error message box */
+.error-box {
+  background: #ffe5e5;
+  padding: 12px;
+  border-left: 4px solid #ff4444;
+  color: #b80000;
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+
+/* ===== Form Styling ===== */
+
+.add-product-form {
+  display: grid;
+  gap: 14px;
+}
+
+.add-product-form input,
+.add-product-form textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+  background: #fafafa;
+}
+
+.add-product-form input:focus,
+.add-product-form textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  background: #fff;
+}
+
+.add-product-form textarea {
+  resize: vertical;
+}
+
+/* ===== Buttons ===== */
+
+/* .btn-primary {
+  background: #007bff;
+  color: white;
+  padding: 12px 18px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.25s ease;
+  width: 100%;
+} */
+
+/* .btn-primary:hover {
+  background: #0063cc;
+} */
+
+/* .btn-primary:disabled {
+  background: #88bdf5;
+  cursor: not-allowed;
+} */
+
+/* Back button in header */
+.btn-outline {
+  padding: 10px 16px;
+  border: 2px solid #007bff;
+  border-radius: 6px;
+  color: #007bff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+.btn-outline:hover {
+  background: #007bff;
+  color: white;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .add-product-container {
+    padding: 20px;
+  }
+
+  .add-product-container h2 {
+    font-size: 1.5rem;
+  }
+
+  /* .btn-primary {
+    font-size: 0.95rem;
+  } */
+}
