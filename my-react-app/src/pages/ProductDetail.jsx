@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Header from '../components/Header'
 import { useCart } from '../store/cartStore'
+import { useNavigate } from "react-router-dom";
 // import api from '../services/api'
+
+
 
 export default function ProductDetail(){
   const { id } = useParams()
@@ -11,6 +14,7 @@ export default function ProductDetail(){
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/products/${id}`)
@@ -95,6 +99,11 @@ export default function ProductDetail(){
               <Link to="/cart" className="btn btn-outline">View cart</Link>
             </div>
           </aside>
+          <div>
+            <button onClick={() => navigate(`/products/edit/${product.id}`)}>
+              Edit Product
+            </button>
+          </div>
         </div>
       </div>
     </main>

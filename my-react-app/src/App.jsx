@@ -12,6 +12,7 @@ import AddProduct from "./pages/AddProduct";
 import AdminOrders from './pages/AdminOrders'
 import Login from './pages/login'
 import Signup from './pages/Signup'
+import EditProduct from './pages/EditProduct'
 
 function App() {
   
@@ -27,6 +28,7 @@ function App() {
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/admin/orders" element={<AdminOrders />} />
+        <Route path="/products/edit/:id" element={<EditProduct />} />
       </Routes>
     </BrowserRouter>
   )

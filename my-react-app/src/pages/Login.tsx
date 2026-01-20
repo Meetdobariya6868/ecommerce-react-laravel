@@ -11,7 +11,7 @@ function Login() {
   const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault(); 
+    e.preventDefault();     
 
     const response = await login({ email, password });
 

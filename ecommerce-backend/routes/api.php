@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PlaceOrderController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LoginController;
 
 Route::get('/test', function () {
     return response()->json(['message' => 'API working']);
@@ -20,3 +21,13 @@ Route::get('/admin/orders', [PlaceOrderController::class, 'index']);
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+Route::put('/products/{id}', [ProductController::class, 'update']);    
+});
+
+
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/register', [LoginController::class, 'register']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout']);
+ });

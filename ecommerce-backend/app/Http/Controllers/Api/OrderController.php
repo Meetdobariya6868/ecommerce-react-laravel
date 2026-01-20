@@ -10,8 +10,6 @@ class OrderController extends Controller
 {
     public function placeOrder(Request $request)
     {
-        // Return the received order for now
-        // (Later we will save this to MySQL)
         $order = Order::create([
         'items' => json_encode($request->items),
         'total' => $request->total
