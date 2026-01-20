@@ -32,3 +32,11 @@ export async function login(data: LoginData) {
 
   return res.json();
 }
+
+export function getAuthHeaders() {
+  const token = localStorage.getItem("token");
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+}

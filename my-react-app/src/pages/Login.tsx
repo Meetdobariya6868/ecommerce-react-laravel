@@ -16,6 +16,7 @@ function Login() {
     const response = await login({ email, password });
 
     if (response.status === "success") {
+      localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
       if(response.user.role === "admin") {
         navigate("/admin/orders");

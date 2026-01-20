@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosClient from "../api/axiosClient";
+import { getAuthHeaders } from "../api/auth";
 
 export default function EditProduct() {
   const { id } = useParams();
@@ -26,13 +27,16 @@ export default function EditProduct() {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    await axiosClient.put(`/products/${id}`, form);
+  await axiosClient.put(`/products/${id}`, form, {
+    headers: getAuthHeaders(),
+  });
 
-    alert("Product updated successfully!");
-    navigate(`/products/${id}`);
-  };
+  alert("Product updated successfully!");
+  navigate(`/products/${id}`);
+};
+
 
   return (
     <div className="edit-product-container">
