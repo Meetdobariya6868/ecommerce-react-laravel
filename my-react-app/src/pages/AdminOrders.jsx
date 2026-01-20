@@ -1,9 +1,33 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
+import { Link } from 'react-router-dom';
+import ProductGrid from '../components/ProductGrid'
 
 export default function AdminOrders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    function handleAdd(product, qty = 1) {
+        addItem(product, qty)
+        // quick non-blocking feedback
+        const msg = `${product.name} (x${qty}) added to cart`
+        // small toast using native Notification API is intrusive, use console + alert fallback
+        try { console.info(msg) } catch (e) {}
+        // optional: lightweight toast
+        const el = document.createElement('div')
+        el.textContent = msg
+        el.style.position = 'fixed'
+        el.style.right = '16px'
+        el.style.bottom = '16px'
+        el.style.background = '#111'
+        el.style.color = '#fff'
+        el.style.padding = '10px 14px'
+        el.style.borderRadius = '8px'
+        el.style.boxShadow = '0 4px 18px rgba(2,6,23,0.3)'
+        document.body.appendChild(el)
+        setTimeout(()=> el.remove(), 1400)
+    }
+
 
     // const parsedItems = Array.isArray(order.items)
     //     ? order.items
@@ -33,79 +57,19 @@ export default function AdminOrders() {
 
     return (
         <main style={{ background: "#f6f7fb", minHeight: "100vh" }}>
-            <Header />
+            {/* <Link to="/add-product" className='btn btn-outline'>Add products</Link> */}
+            <Link to="/add-product" className='btn btn-outline'>Add Product</Link>
 
             <div style={{ maxWidth: 1100, margin: "0 auto", padding: 30 }}>
                 <h2 style={{ marginBottom: 20 }}>Admin – Orders</h2>
 
-                {orders.length === 0 && <p>No orders found.</p>}
-
-                {orders.map(order => (
-                    <div
-                        key={order.id}
-                        style={{
-                            background: "#fff",
-                            padding: 20,
-                            borderRadius: 10,
-                            marginBottom: 20,
-                            boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
-                        }}
-                    >
-                        <div style={{ marginBottom: 10 }}>
-                            <strong>Order ID:</strong> #{order.id}<br />
-                            <strong>Name:</strong> {order.name}<br />
-                            <strong>Email:</strong> {order.email}<br />
-                            <strong>Phone:</strong> {order.phone}<br />
-                            <strong>Address:</strong> {order.address}<br />
-                            <strong>Total:</strong> ₹{Number(order.total).toFixed(2)}<br />
-                            <strong>Date:</strong> {new Date(order.created_at).toLocaleString()}
-                        </div>
-
-                        <hr />
-
-                        <h4>Items</h4>
-
-                        {(() => {
-                            const parsedItems = Array.isArray(order.items)
-                                ? order.items
-                                : JSON.parse(order.items || "[]");
-
-                            return parsedItems.map((item, i) => (
-                                <div
-                                    key={i}
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        padding: "6px 0",
-                                        borderBottom: "1px solid #eee"
-                                    }}
-                                >
-                                    {/* <div>
-                                        {item.image && (
-                                            <img
-                                                src={item.image }
-                                                alt={item.name}
-                                                style={{
-                                                    width: 50,
-                                                    height: 50,
-                                                    objectFit: "cover",
-                                                    borderRadius: 4
-                                                }}
-                                            />
-                                        )}
-                                    </div> */}
-                                    <div>
-                                        {item.name} × {item.qty}
-                                    </div>
-                                    <div>
-                                        ₹{(item.price * item.qty).toFixed(2)}
-                                    </div>
-                                </div>
-                            ));
-                        })()}
-
-                    </div>
-                ))}
+                <section id="products" className="container">
+                <div className="mb-6">
+                    <h3>Featured products</h3>
+                    <a href="#" className="text-muted">View all</a>
+                </div>
+                <ProductGrid onAdd={handleAdd} />
+            </section>
             </div>
         </main>
     );

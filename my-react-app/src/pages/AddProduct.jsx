@@ -36,7 +36,7 @@ export default function AddProduct() {
       .then(data => {
         if (data.message === "Product created successfully") {
           alert("Product added!");
-          navigate("/");  // redirect to homepage
+          navigate("/admin/orders");  // redirect to admin page
         } else {
           setError("Something went wrong.");
         }
@@ -47,7 +47,7 @@ export default function AddProduct() {
 
   return (
     <main>
-      <Header />
+      {/* <Header /> */}
       <div className="add-product-container" >
         <h2>Add New Product</h2>
 

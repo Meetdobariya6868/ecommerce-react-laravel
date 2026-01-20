@@ -11,12 +11,12 @@ export default function Header() {
       <div className="container inner">
         <div className="site-brand">MyShop</div>
         <nav className="site-nav">
-          <Link to="/">Home</Link>
-          <Link to="/">Catalog</Link>
+          <Link to="/home">Home</Link>
+          <Link to="/catalog">Catalog</Link>
           <Link to="/orders">Orders</Link>
           <Link to="/cart">Cart ({count})</Link>
-          <Link to="/add-product">Add Product</Link>
-          <Link to="/admin/orders" className='btn btn-outline'>Admin Orders</Link>
+          {/* <Link to="/add-product">Add Product</Link> */}
+          {/* <Link to="/admin/orders" className='btn btn-outline'>Admin Orders</Link> */}
         </nav>
       </div>
     </header>

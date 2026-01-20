@@ -1,79 +1,86 @@
-import '../styles/login.css'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../api/auth";
+import "../styles/login.css";
 
 function Login() {
-  return <>
-   <div className="login-container">
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault(); 
+
+    const response = await login({ email, password });
+
+    if (response.status === "success") {
+      localStorage.setItem("user", JSON.stringify(response.user));
+      if(response.user.role === "admin") {
+        navigate("/admin/orders");
+      } else {  
+        navigate("/home"); 
+      }
+    } else {
+      setError(response.message || "Invalid credentials");
+    }
+  };
+
+  return (
+    <>
+      <div className="login-container">
         <div className="login-card">
-            <div className="login-header">
-                <h2>Welcome Back</h2>
-                <p>Sign in to your account</p>
-            </div>
-            
-            <form className="login-form" id="loginForm">
-                <div className="form-group">
-                    <div className="input-wrapper">
-                        <input type="email" id="email" name="email" required autoComplete="email" />
-                        <label >Email Address</label>
-                        <span className="focus-border"></span>
-                    </div>
-                    <span className="error-message" id="emailError"></span>
-                </div>
+          <div className="login-header">
+            <h2>Welcome Back</h2>
+            <p>Sign in to your account</p>
+          </div>
 
-                <div className="form-group">
-                    <div className="input-wrapper password-wrapper">
-                        <input type="password" id="password" name="password" required autoComplete="current-password" />
-                        <label >Password</label>
-                        <button type="button" className="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
-                            <span className="eye-icon"></span>
-                        </button>
-                        <span className="focus-border"></span>
-                    </div>
-                    <span className="error-message" id="passwordError"></span>
-                </div>
-
-                <div className="form-options">
-                    <label className="remember-wrapper">
-                        <input type="checkbox" id="remember" name="remember" />
-                        <span className="checkbox-label">
-                            <span className="checkmark"></span>
-                            Remember me
-                        </span>
-                    </label>
-                    <a href="#" className="forgot-password">Forgot password?</a>
-                </div>
-
-                <button type="submit" className="login-btn btn">
-                    <span className="btn-text">Sign In</span>
-                    <span className="btn-loader"></span>
-                </button>
-            </form>
-
-            <div className="divider">
-                <span>or continue with</span>
+          <form className="login-form" id="loginForm" onSubmit={handleLogin}>
+            <div className="form-group">
+              <div className="input-wrapper">
+                <input
+                  type="email"
+                  required
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <label>Email Address</label>
+                <span className="focus-border"></span>
+              </div>
             </div>
 
-            <div className="social-login">
-                <button type="button" className="social-btn google-btn">
-                    <span className="social-icon google-icon"></span>
-                    Google
-                </button>
-                <button type="button" className="social-btn github-btn">
-                    <span className="social-icon github-icon"></span>
-                    GitHub
-                </button>
+            <div className="form-group">
+              <div className="input-wrapper password-wrapper">
+                <input
+                  type="password"
+                  required
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <label>Password</label>
+                <span className="focus-border"></span>
+              </div>
             </div>
 
-            <div className="signup-link">
-                <p>Don't have an account? <a href="#">Sign up</a></p>
-            </div>
+            <button type="submit" className="login-btn btn">
+              <span className="btn-text">Sign In</span>
+            </button>
 
-            <div className="success-message" id="successMessage">
-                <div className="success-icon">✓</div>
-                <h3>Login Successful!</h3>
-                <p>Redirecting to your dashboard...</p>
-            </div>
+            {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+          </form>
+
+          <div className="signup-link">
+            <p>
+              Don't have an account? <a href="/signup">Sign up</a>
+            </p>
+          </div>
         </div>
-    </div>
-  </>;
+      </div>
+    </>
+  );
 }
+
 export default Login;

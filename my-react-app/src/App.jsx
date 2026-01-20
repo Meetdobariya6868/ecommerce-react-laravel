@@ -11,12 +11,15 @@ import ProductDetail from './pages/ProductDetail'
 import AddProduct from "./pages/AddProduct";
 import AdminOrders from './pages/AdminOrders'
 import Login from './pages/login'
+import Signup from './pages/Signup'
 
 function App() {
+  
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
