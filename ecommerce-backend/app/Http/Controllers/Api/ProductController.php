@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\PlaceOrder;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -64,5 +65,42 @@ class ProductController extends Controller
             'message' => 'Product created successfully',
             'product' => $product
         ], 201);
+    }
+
+    public function destroy($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Product not found'
+            ], 404);
+        }
+
+        // Find all orders that contain this product
+        $orders = PlaceOrder::whereJsonContains('items', ['id' => $id])->get();
+
+        foreach ($orders as $order) {
+            $items = json_decode($order->items, true);
+            // Filter out the product
+            $items = array_filter($items, function($item) use ($id) {
+                return $item['id'] != $id;
+            });
+            if (empty($items)) {
+                // If no items left, delete the order
+                $order->delete();
+            } else {
+                // Update the order with remaining items
+                $order->items = json_encode(array_values($items)); // reindex array
+                $order->save();
+            }
+        }
+
+        $product->delete();
+
+        return response()->json([
+            'message' => 'Product deleted successfully'
+        ]);
     }
 }

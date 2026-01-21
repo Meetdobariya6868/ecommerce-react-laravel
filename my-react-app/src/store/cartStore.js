@@ -19,7 +19,7 @@ export const useCart = create((set, get) => ({
         if (idx > -1) {
             items[idx].qty += qty
         } else {
-            items.push({ id: product.id, name: product.name, price: product.price, image: product.image, qty })
+            items.push({ id: product.id, name: product.name, price: Number(product.price) || 0, image: product.image, qty })
         }
         set({ items })
         localStorage.setItem(LOCAL_KEY, JSON.stringify({ items }))
@@ -39,5 +39,5 @@ export const useCart = create((set, get) => ({
         localStorage.removeItem(LOCAL_KEY)
     },
     count: () => (get().items || []).reduce((s, i) => s + i.qty, 0),
-    total: () => (get().items || []).reduce((s, i) => s + i.qty * i.price, 0),
+    total: () => (get().items || []).reduce((s, i) => s + i.qty * (Number(i.price) || 0), 0),
 }))

@@ -26,8 +26,8 @@ export default function Cart() {
                             gap: 16,
                             marginTop: 16
                         }}>
-                            {items.map((i) => (
-                                <div key={i.id}
+                            {items.map((i, index) => (
+                                <div key={`cart-item-${i.id}-${index}`}
                                     style={{
                                         display: 'flex',
                                         background: "#fff",
@@ -50,7 +50,7 @@ export default function Cart() {
 
                                     <div style={{ flex: 1, padding: "0 16px" }}>
                                         <div style={{ fontWeight: 700, fontSize: 17 }}>{i.name}</div>
-                                        <div style={{ color: "#6b7280", marginTop: 4 }}>₹{i.price.toFixed(2)}</div>
+                                        <div style={{ color: "#6b7280", marginTop: 4 }}>₹{(Number(i.price) || 0).toFixed(2)}</div>
 
                                         {/* QTY */}
                                         <div style={{ marginTop: 12, display: 'flex', gap: 10, alignItems: 'center' }}>
@@ -103,7 +103,7 @@ export default function Cart() {
                             boxShadow: "0 4px 12px rgba(0,0,0,0.06)"
                         }}>
                             <div style={{ fontWeight: 700, fontSize: 20 }}>
-                                Total: ${total.toFixed(2)}
+                                Total: ₹{total.toFixed(2)}
                             </div>
 
                             <div>
@@ -148,7 +148,7 @@ export default function Cart() {
                         fontSize: 18
                     }}>
                         Your cart is empty.{" "}
-                        <Link to="/" style={{ color: "#2563eb", fontWeight: 600 }}>
+                        <Link to="/home" style={{ color: "#2563eb", fontWeight: 600 }}>
                             Start shopping
                         </Link>
                     </div>

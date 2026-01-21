@@ -8,18 +8,34 @@ import { logoutUser } from "../services/api";
 export default function AdminOrders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [isAuthorized, setIsAuthorized] = useState(false);
-    const navigate = useNavigate();
+
+    function handleAdd() {
+        addItem(product, qty)
+        // quick non-blocking feedback
+        const msg = `${product.name} (x${qty}) added to cart`
+        // small toast using native Notification API is intrusive, use console + alert fallback
+        try { console.info(msg) } catch (e) {}
+        // optional: lightweight toast
+        const el = document.createElement('div')
+        el.textContent = msg
+        el.style.position = 'fixed'
+        el.style.right = '16px'
+        el.style.bottom = '16px'
+        el.style.background = '#111'
+        el.style.color = '#fff'
+        el.style.padding = '10px 14px'
+        el.style.borderRadius = '8px'
+        el.style.boxShadow = '0 4px 18px rgba(2,6,23,0.3)'
+        document.body.appendChild(el)
+        setTimeout(()=> el.remove(), 1400)
+    }
+
+
+    // const parsedItems = Array.isArray(order.items)
+    //     ? order.items
+    //     : JSON.parse(order.items || "[]");
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        if (!token || user.role !== "admin") {
-            navigate("/");
-            return;
-        }
-        setIsAuthorized(true);
-
         fetch("http://127.0.0.1:8000/api/admin/orders", {
             headers: getAuthHeaders()
         })
@@ -32,11 +48,7 @@ export default function AdminOrders() {
                 console.error("Order fetch error:", err);
                 setLoading(false);
             });
-    }, [navigate]);
-
-    if (!isAuthorized) {
-        return <p>Redirecting...</p>; // or null
-    }
+    }, []);
 
     if (loading) {
         return (

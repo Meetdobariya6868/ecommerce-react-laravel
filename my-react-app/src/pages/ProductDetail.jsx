@@ -16,6 +16,9 @@ export default function ProductDetail(){
   const [error, setError] = useState(null)
   const navigate = useNavigate();
 
+  // Get user from localStorage (assuming it's stored on login)
+  const user = JSON.parse(localStorage.getItem('user')) || {};
+
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/products/${id}`)
       .then((res) => res.json())
@@ -58,22 +61,49 @@ export default function ProductDetail(){
     </main>
   )
 
-  function handleAdd(){
-    const n = Math.max(1, Number(qty) || 1)
-    addItem(product, n)
-    // small confirmation
-    const el = document.createElement('div')
-    el.textContent = `${product.name} (x${n}) added to cart`
-    el.style.position = 'fixed'
-    el.style.right = '16px'
-    el.style.bottom = '16px'
-    el.style.background = '#111'
-    el.style.color = '#fff'
-    el.style.padding = '10px 14px'
-    el.style.borderRadius = '8px'
-    el.style.boxShadow = '0 4px 18px rgba(2,6,23,0.3)'
-    document.body.appendChild(el)
-    setTimeout(()=> el.remove(), 1400)
+  function handleAdd() {
+        addItem(product, qty)
+        // quick non-blocking feedback
+        const msg = `${product.name} (x${qty}) added to cart`
+        // small toast using native Notification API is intrusive, use console + alert fallback
+        try { console.info(msg) } catch (e) {}
+        // optional: lightweight toast
+        const el = document.createElement('div')
+        el.textContent = msg
+        el.style.position = 'fixed'
+        el.style.right = '16px'
+        el.style.bottom = '16px'
+        el.style.background = '#111'
+        el.style.color = '#fff'
+        el.style.padding = '10px 14px'
+        el.style.borderRadius = '8px'
+        el.style.boxShadow = '0 4px 18px rgba(2,6,23,0.3)'
+        document.body.appendChild(el)
+        setTimeout(()=> el.remove(), 1400)
+    }
+
+  function handleDelete(){
+    if (window.confirm(`Are you sure you want to delete "${product.name}"?`)) {
+      fetch(`http://127.0.0.1:8000/api/products/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // assuming token is stored
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((res) => {
+        if (res.ok) {
+          alert('Product deleted successfully');
+          navigate('/home');
+        } else {
+          alert('Failed to delete product');
+        }
+      })
+      .catch((err) => {
+        console.log("Delete Error:", err);
+        alert('Error deleting product');
+      });
+    }
   }
 
   return (
@@ -100,42 +130,19 @@ export default function ProductDetail(){
             </div>
           </aside>
           <div>
-            <button onClick={() => navigate(`/products/edit/${product.id}`)}>
-              Edit Product
-            </button>
+            {user.role === 'admin' && (
+              <>
+                <button onClick={() => navigate(`/products/edit/${product.id}`)}>
+                  Edit Product
+                </button>
+                <button onClick={handleDelete} style={{marginLeft: '10px', backgroundColor: 'red', color: 'white'}}>
+                  Delete Product
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
     </main>
   )
 }
-
-
-
-// import { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
-
-// const ProductDetail = () => {
-//   const { id } = useParams();
-//   const [product, setProduct] = useState(null);
-
-//   useEffect(() => {
-//     fetch(`http://127.0.0.1:8000/api/products/${id}`)
-//       .then((res) => res.json())
-//       .then((data) => setProduct(data))
-//       .catch((err) => console.log("API Error:", err));
-//   }, [id]);
-
-//   if (!product) return <p>Loading...</p>;
-
-//   return (
-//     <div className="product-detail">
-//       <img src={product.image} width="200" />
-//       <h2>{product.name}</h2>
-//       <p>₹{product.price}</p>
-//       <p>{product.description}</p>
-//     </div>
-//   );
-// };
-
-// export default ProductDetail;
