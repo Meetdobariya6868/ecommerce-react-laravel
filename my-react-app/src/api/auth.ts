@@ -11,7 +11,7 @@ export interface LoginData {
   password: string;
 }
 
-const API_URL = "http://localhost:8000/api"; // your WAMP PHP backend path
+const API_URL = "http://localhost:8000/api"; 
 
 export async function signup(data: SignupData) {
   const res = await fetch(`${API_URL}/signup`, {

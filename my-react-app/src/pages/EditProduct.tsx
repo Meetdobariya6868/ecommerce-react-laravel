@@ -34,7 +34,7 @@ export default function EditProduct() {
   });
 
   alert("Product updated successfully!");
-  navigate(`/products/${id}`);
+  navigate(`/admin/orders`);
 };
 
 

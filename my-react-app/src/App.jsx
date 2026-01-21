@@ -10,7 +10,7 @@ import OrderConfirmation from './pages/OrderConfirmation'
 import ProductDetail from './pages/ProductDetail'
 import AddProduct from "./pages/AddProduct";
 import AdminOrders from './pages/AdminOrders'
-import Login from './pages/login'
+import Login from './pages/Login'
 import Signup from './pages/Signup'
 import EditProduct from './pages/EditProduct'
 

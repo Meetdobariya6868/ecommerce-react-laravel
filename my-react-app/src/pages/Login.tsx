@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../api/auth";
+// import { login } from "../api/auth";
 import "../styles/login.css";
+import { loginUser } from "../services/api";
+import axiosClient from "../api/axiosClient";
 
 function Login() {
   const navigate = useNavigate();
@@ -11,20 +13,32 @@ function Login() {
   const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();     
+    e.preventDefault();   
+    
+    try {
+      setError("");
+      const response = await axiosClient.post("/login", {
+      email,
+      password,
+    });
 
-    const response = await login({ email, password });
+    const data = response.data;
+    // const response = await loginUser({ email, password });
 
-    if (response.status === "success") {
-      localStorage.setItem("token", response.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
-      if(response.user.role === "admin") {
+    if (data.status === "success") {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      if(data.user.role === "admin") {
         navigate("/admin/orders");
       } else {  
         navigate("/home"); 
       }
     } else {
-      setError(response.message || "Invalid credentials");
+      setError(data.message || "Invalid credentials");
+    }
+    } catch (err) {
+      alert("An error occurred during login. Please try again.");
     }
   };
 

@@ -28,10 +28,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/admin/orders', [PlaceOrderController::class, 'index']);
 });
 
-// Route::middleware('auth:sanctum')->group(function () {
-// Route::put('/products/{id}', [ProductController::class, 'update']);    
-// });
-
-
-// Route::post('/login', [LoginController::class, 'login']);
-// Route::post('/register', [LoginController::class, 'register']);

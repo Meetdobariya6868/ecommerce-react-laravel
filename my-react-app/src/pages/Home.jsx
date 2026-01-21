@@ -2,10 +2,23 @@ import React from 'react'
 import ProductGrid from '../components/ProductGrid'
 import { useCart } from '../store/cartStore'
 import Header from '../components/Header'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export default function Home() {
     // const featured = products.slice(0, 6)
     const addItem = useCart((s) => s.addItem)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        if (!token) {
+            navigate("/");
+        } else if (user.role === "admin") {
+            navigate("/admin/orders");
+        }
+    }, [navigate])
 
     function handleAdd(product, qty = 1) {
         addItem(product, qty)
