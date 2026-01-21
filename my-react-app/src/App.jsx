@@ -13,6 +13,8 @@ import AdminOrders from './pages/AdminOrders'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import EditProduct from './pages/EditProduct'
+import Orders from './pages/Orders'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
   
@@ -21,14 +23,51 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/order-confirmation" element={<OrderConfirmation />} />
-        <Route path="/add-product" element={<AddProduct />} />
-        <Route path="/admin/orders" element={<AdminOrders />} />
-        <Route path="/products/edit/:id" element={<EditProduct />} />
+        <Route path="/home" element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        } />
+        <Route path="/product/:id" element={
+          <ProtectedRoute>
+            <ProductDetail />
+          </ProtectedRoute>
+        } />
+        <Route path="/cart" element={
+          <ProtectedRoute>
+            <Cart />
+          </ProtectedRoute>
+        } />
+        <Route path="/orders" element={
+          <ProtectedRoute>
+            <Orders />
+          </ProtectedRoute>
+        } />
+        <Route path="/checkout" element={
+          <ProtectedRoute>
+            <Checkout />
+          </ProtectedRoute>
+        } />
+        <Route path="/order-confirmation" element={
+          <ProtectedRoute>
+            <OrderConfirmation />
+          </ProtectedRoute>
+        } />
+        <Route path="/add-product" element={
+          <ProtectedRoute requiredRole="admin">
+            <AddProduct />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/orders" element={
+          <ProtectedRoute requiredRole="admin">
+            <AdminOrders />
+          </ProtectedRoute>
+        } />
+        <Route path="/products/edit/:id" element={
+          <ProtectedRoute requiredRole="admin">
+            <EditProduct />
+          </ProtectedRoute>
+        } />
       </Routes>
     </BrowserRouter>
   )

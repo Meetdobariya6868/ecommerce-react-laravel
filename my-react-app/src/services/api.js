@@ -41,3 +41,12 @@ export async function logoutUser() {
     window.location.href = "/"; 
   }
 }
+
+export async function getUserOrders() {
+  const response = await fetch(`${API_URL}/user/orders`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
+
+  return response.json();
+}

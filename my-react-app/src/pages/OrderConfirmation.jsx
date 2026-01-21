@@ -23,7 +23,7 @@ export default function OrderConfirmation(){
     <main>
       <div className="container" style={{padding:'32px 0'}}>
         <h2>Order not found</h2>
-        <p className="text-muted">No recent order found. <Link to="/">Continue shopping</Link></p>
+        <p className="text-muted">No recent order found. <Link to="/home">Continue shopping</Link></p>
       </div>
     </main>
   )
@@ -44,7 +44,7 @@ export default function OrderConfirmation(){
         </div>
         <div style={{marginTop:16,fontWeight:700}}>Total: ₹{order.total.toFixed(2)}</div>
         <div style={{marginTop:24}}>
-          <Link to="/" className="btn btn-primary">Continue shopping</Link>
+          <Link to="/home" className="btn btn-primary">Continue shopping</Link>
         </div>
       </div>
     </main>

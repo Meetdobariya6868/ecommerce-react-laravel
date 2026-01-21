@@ -15,7 +15,6 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::post('/order', [OrderController::class, 'placeOrder']);
 Route::post('/products', [ProductController::class, 'store']);
-Route::post('/place-order', [PlaceOrderController::class, 'store']);
 Route::get('/admin/orders', [PlaceOrderController::class, 'index']);
 
 Route::post('/signup', [AuthController::class, 'signup']);
@@ -26,6 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Protected routes
     Route::put('/products/{id}', [ProductController::class, 'update']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+    Route::post('/place-order', [PlaceOrderController::class, 'store']);
     Route::get('/admin/orders', [PlaceOrderController::class, 'index']);
+    Route::get('/user/orders', [PlaceOrderController::class, 'userOrders']);
 });
 

@@ -16,6 +16,21 @@ class PlaceOrderController extends Controller
         );
     }
 
+    public function userOrders(Request $request)
+    {
+        $orders = $request->user()->placeOrders()->latest()->get();
+        
+        // Ensure items is always an array
+        $orders->transform(function ($order) {
+            if (is_string($order->items)) {
+                $order->items = json_decode($order->items, true) ?? [];
+            }
+            return $order;
+        });
+        
+        return response()->json($orders);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -33,7 +48,8 @@ class PlaceOrderController extends Controller
             'phone'   => $validated['phone'],
             'address' => $validated['address'],
             'total'   => $validated['total'],
-            'items'   => json_encode($validated['items']),
+            'items'   => $validated['items'],
+            'user_id' => $request->user()->id,
         ]);
 
         return response()->json([

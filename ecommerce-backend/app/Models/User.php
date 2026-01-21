@@ -47,4 +47,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function placeOrders()
+    {
+        return $this->hasMany(PlaceOrder::class);
+    }
 }

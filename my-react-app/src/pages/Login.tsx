@@ -29,7 +29,7 @@ function Login() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      if(data.user.role === "admin") {
+      if(data.user.role === "admin" ) {
         navigate("/admin/orders");
       } else {  
         navigate("/home"); 
